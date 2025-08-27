@@ -1,0 +1,8 @@
+{
+  "output_dir": "downloads",
+  "video_format": "best",
+  "max_retries": 3,
+  "retry_delay": 5,
+  "enable_playlist": true,
+  "max_playlist_items": 10
+}

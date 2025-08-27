@@ -1,0 +1,11 @@
+{
+  "output_dir": "downloads",
+  "audio_format": "mp3",
+  "audio_quality": "192k",
+  "video_format": "best",
+  "max_retries": 3,
+  "retry_delay": 5,
+  "enable_playlist": true,
+  "max_playlist_items": 10,
+  "create_subdirs": true
+}

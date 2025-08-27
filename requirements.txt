@@ -1,3 +1,12 @@
+# Dependências principais
+yt-dlp>=2023.12.30
+tqdm>=4.64.0
 
-pydub==0.25.1
-yt-dlp==2023.12.30 
+# Processamento de áudio (opcional, para funcionalidades avançadas)
+pydub>=0.25.1
+
+# Validação de tipos (opcional, para desenvolvimento)
+typing-extensions>=4.0.0
+
+# Sistema de arquivos melhorado
+pathlib2>=2.3.7; python_version < "3.4" 
