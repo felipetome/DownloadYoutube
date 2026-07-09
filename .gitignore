@@ -1,0 +1,28 @@
+# ===== Ambiente Python =====
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# ===== Saídas do programa (conteúdo baixado) =====
+downloads/
+logs/
+log_download.txt
+download_config.json
+download_config_simple.json
+
+# ===== Modelos e dados pesados (baixe/instale localmente) =====
+models/
+pyAudioAnalysis/
+vosk-model-*/
+*.mdl
+*.fst
+
+# ===== Sistema operacional / editores =====
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

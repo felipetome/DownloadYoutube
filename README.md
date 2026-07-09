@@ -1,215 +1,201 @@
-# 🎵 Downloader de Áudio do YouTube - Versão Melhorada
+# 🎵 YouTube Downloader — Áudio, Transcrição e Cortes
 
-Um downloader robusto e moderno para baixar vídeos do YouTube e extrair áudio em alta qualidade.
+Ferramenta de linha de comando em Python para **baixar vídeos e áudios do YouTube**, **transcrever** a fala com o Whisper (OpenAI) e **sugerir cortes** automaticamente — pensada especialmente para reaproveitar pregações e palestras em clipes curtos.
 
-## ✨ **Novas Funcionalidades**
-
-### 🔧 **Melhorias Técnicas**
-- **Arquitetura Orientada a Objetos**: Código reestruturado com classes bem definidas
-- **Sistema de Configuração**: Arquivo JSON para personalizar comportamento
-- **Tratamento de Erros Robusto**: Retry automático e melhor gestão de falhas
-- **Logging Avançado**: Sistema de logs com cores e arquivos organizados por data
-- **Validação de Dependências**: Verifica automaticamente se ffmpeg está instalado
-
-### 📱 **Interface Melhorada**
-- **Menu Expandido**: 6 opções principais com submenus
-- **Feedback Visual**: Emojis e cores para melhor experiência
-- **Configurações Interativas**: Menu para personalizar o programa
-- **Acesso Rápido**: Abrir pasta de downloads diretamente
-
-### 🎯 **Funcionalidades Adicionais**
-- **Suporte a Playlists**: Download automático de playlists inteiras
-- **Múltiplos Formatos**: Suporte a MP3, AAC e M4A
-- **Qualidade Configurável**: Ajuste de bitrate de áudio
-- **Progresso Detalhado**: Barras de progresso com velocidade e tempo estimado
-- **Retry Automático**: Tentativas múltiplas em caso de falha
-
-## 🚀 **Instalação**
-
-### **Pré-requisitos**
-```bash
-# Python 3.7+
-python --version
-
-# FFmpeg (obrigatório)
-ffmpeg -version
-```
-
-### **Dependências Python**
-```bash
-pip install -r requirements.txt
-```
-
-## 📖 **Como Usar**
-
-### **1. Executar o Programa**
-```bash
-python down.py
-```
-
-### **2. Menu Principal**
-```
-🎵 DOWNLOADER DE ÁUDIO DO YOUTUBE - VERSÃO MELHORADA
-============================================================
-1. 📥 Baixar vídeo único
-2. 📋 Baixar playlist
-3. 🎧 Converter vídeo existente
-4. ⚙️  Configurações
-5. 📁 Abrir pasta de downloads
-6. ❌ Sair
-```
-
-### **3. Opções Disponíveis**
-
-#### **📥 Baixar Vídeo Único**
-- Cole a URL do YouTube
-- Download automático + conversão para áudio
-- Arquivo salvo na pasta `downloads/`
-
-#### **📋 Baixar Playlist**
-- Cole URL de playlist do YouTube
-- Download sequencial de todos os vídeos
-- Conversão automática para áudio
-- Limite configurável de itens
-
-#### **🎧 Converter Vídeo Existente**
-- Lista vídeos .mp4 da pasta downloads
-- Conversão para áudio com progresso
-- Suporte a múltiplos formatos
-
-#### **⚙️ Configurações**
-- Pasta de saída personalizada
-- Formato de áudio (MP3, AAC, M4A)
-- Qualidade de áudio configurável
-- Número de tentativas de retry
-- Suporte a playlists
-- Limite de itens por playlist
-
-#### **📁 Abrir Pasta de Downloads**
-- Acesso direto à pasta de downloads
-- Compatível com Windows, macOS e Linux
-
-## ⚙️ **Configurações**
-
-### **Arquivo de Configuração**
-```json
-{
-  "output_dir": "downloads",
-  "audio_format": "mp3",
-  "audio_quality": "192k",
-  "video_format": "best",
-  "max_retries": 3,
-  "retry_delay": 5,
-  "enable_playlist": true,
-  "max_playlist_items": 10,
-  "create_subdirs": true
-}
-```
-
-### **Parâmetros Configuráveis**
-- **output_dir**: Pasta onde salvar arquivos
-- **audio_format**: Formato de saída (mp3, aac, m4a)
-- **audio_quality**: Qualidade do áudio (ex: 128k, 192k, 320k)
-- **video_format**: Qualidade do vídeo (best, worst, 720p, etc.)
-- **max_retries**: Tentativas em caso de falha
-- **retry_delay**: Pausa entre tentativas (segundos)
-- **enable_playlist**: Habilita suporte a playlists
-- **max_playlist_items**: Máximo de vídeos por playlist
-
-## 📁 **Estrutura de Arquivos**
-
-```
-projeto/
-├── down.py                 # Programa principal melhorado
-├── download_config.json    # Configurações personalizáveis
-├── requirements.txt        # Dependências Python
-├── README.md              # Esta documentação
-├── downloads/             # Pasta de arquivos baixados
-│   ├── video1.mp4
-│   ├── video1.mp3
-│   └── ...
-└── logs/                  # Logs organizados por data
-    ├── download_20241201.log
-    └── download_20241202.log
-```
-
-## 🔍 **Logs e Monitoramento**
-
-### **Sistema de Logs**
-- **Console**: Informações importantes com cores
-- **Arquivo**: Logs detalhados organizados por data
-- **Níveis**: DEBUG, INFO, WARNING, ERROR, CRITICAL
-
-### **Exemplo de Log**
-```
-INFO: 🚀 Programa iniciado
-INFO: 📥 Iniciando download: https://youtube.com/watch?v=...
-INFO: 📺 Título: Nome do Vídeo
-INFO: ⏱️ Duração: 3min 45s
-INFO: ✅ Download finalizado em 45.2s
-INFO: 🎧 Extraindo áudio: video.mp3
-INFO: ✅ Áudio extraído: downloads/video.mp3
-```
-
-## 🛠️ **Troubleshooting**
-
-### **Problemas Comuns**
-
-#### **FFmpeg não encontrado**
-```bash
-# Windows: Baixe de https://ffmpeg.org/download.html
-# macOS: brew install ffmpeg
-# Linux: sudo apt install ffmpeg
-```
-
-#### **Erro de permissão**
-```bash
-# Verifique se a pasta downloads/ tem permissão de escrita
-# Windows: Execute como administrador se necessário
-```
-
-#### **Download falha**
-- Verifique a conexão com a internet
-- Confirme se a URL do YouTube é válida
-- Aumente o número de tentativas nas configurações
-
-## 🚀 **Melhorias Implementadas**
-
-### **Comparação com Versão Anterior**
-
-| Aspecto | Versão Anterior | Versão Melhorada |
-|---------|----------------|------------------|
-| **Arquitetura** | Funções soltas | Classes organizadas |
-| **Configuração** | Hardcoded | Arquivo JSON |
-| **Playlists** | ❌ Não suportado | ✅ Suporte completo |
-| **Retry** | ❌ Sem retry | ✅ Retry automático |
-| **Logs** | Arquivo único | Sistema organizado |
-| **Interface** | Menu básico | Menu expandido |
-| **Formato Áudio** | Apenas MP3 | MP3, AAC, M4A |
-| **Progresso** | Básico | Detalhado com velocidade |
-| **Tratamento Erros** | Básico | Robusto e informativo |
-
-## 🤝 **Contribuição**
-
-Sugestões e melhorias são bem-vindas! Para contribuir:
-
-1. Fork o projeto
-2. Crie uma branch para sua feature
-3. Commit suas mudanças
-4. Push para a branch
-5. Abra um Pull Request
-
-## 📄 **Licença**
-
-Este projeto é de código aberto e está disponível sob a licença MIT.
-
-## 🙏 **Agradecimentos**
-
-- **yt-dlp**: Biblioteca principal para download
-- **FFmpeg**: Conversão de áudio/vídeo
-- **tqdm**: Barras de progresso
-- **Comunidade Python**: Suporte e feedback
+Tudo roda por um **menu interativo** no terminal, sem precisar decorar comandos.
 
 ---
 
-**🎉 Versão 2.0 - Totalmente reescrita com foco em robustez, usabilidade e funcionalidades avançadas!** 
+## ✨ Recursos
+
+| # | Recurso | O que faz |
+|---|---------|-----------|
+| 1 | **Baixar vídeo único** | Baixa o MP4 na melhor qualidade e extrai o áudio (MP3). |
+| 2 | **Baixar completo** | Cria uma pasta com vídeo + thumbnail + áudio + transcrição + relatório de cortes. |
+| 3 | **Baixar playlist** | Baixa vários vídeos de uma playlist (limite configurável). |
+| 4 | **Converter vídeo existente** | Extrai o áudio de um vídeo já salvo em `downloads/`. |
+| 5 | **Transcrever áudio** | Gera um `.txt` com timestamps usando o Whisper. |
+| 6 | **Analisar cortes** | Lê uma transcrição e sugere os melhores trechos para clipes. |
+| 9 | **Baixar somente áudio** | Baixa direto o áudio (sem passar pelo vídeo). |
+
+Recursos de robustez embutidos:
+
+- ✅ **Validação de integridade** — compara a duração baixada com a esperada e aborta se o arquivo vier truncado (evita MP3 cortado silenciosamente).
+- ✅ **Retentativas automáticas** de download e de fragmentos.
+- ✅ **Seleção automática de client do YouTube** — sem forçar `web/ios`, que hoje exigem PO Token e falham.
+- ✅ **Divisão de áudios longos** em partes de ~29 min (útil para uploads com limite de duração).
+
+---
+
+## 📋 Pré-requisitos
+
+- **Python 3.10+** (testado em 3.14)
+- **FFmpeg** e **FFprobe** no `PATH` — usados para converter e medir a duração das mídias:
+
+  ```bash
+  # macOS
+  brew install ffmpeg
+
+  # Ubuntu / Debian
+  sudo apt install ffmpeg
+
+  # Windows: baixe em https://www.gyan.dev/ffmpeg/builds/ e adicione ao PATH
+  ```
+
+> ℹ️ O Whisper precisa de bastante RAM/CPU. Em máquinas sem GPU, a transcrição de áudios longos (>30 min) com o modelo `medium` pode levar **horas**. Veja [Dicas de desempenho](#-dicas-de-desempenho).
+
+---
+
+## 🚀 Instalação
+
+```bash
+# 1. Clone o repositório
+git clone https://github.com/felipetome/DownloadYoutube.git
+cd DownloadYoutube
+
+# 2. Crie e ative um ambiente virtual
+python3 -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
+
+# 3. Instale as dependências
+pip install -r requirements.txt
+```
+
+> Na **primeira transcrição**, o Whisper baixa automaticamente o modelo escolhido (o `medium` tem ~1.5 GB).
+
+---
+
+## ▶️ Como usar (passo a passo)
+
+Com o ambiente virtual ativado:
+
+```bash
+python youtube_downloader.py
+```
+
+Você verá o menu:
+
+```
+============================================================
+🎵 DOWNLOADER DE ÁUDIO DO YOUTUBE - VERSÃO MELHORADA
+============================================================
+1. 📥 Baixar vídeo único
+2. 📦 Baixar completo (pasta + áudio + transcrição + cortes)
+3. 📋 Baixar playlist
+4. 🎧 Converter vídeo existente
+5. 📝 Transcrever áudio existente
+6. 🎬 Analisar transcrição para cortes
+7. ⚙️  Configurações
+8. 📁 Abrir pasta de downloads
+9. 🎵 Baixar somente áudio
+0. ❌ Sair
+```
+
+Digite o número da opção e siga as instruções na tela.
+
+### Exemplo 1 — Só o áudio (MP3)
+
+1. Escolha a opção **9**.
+2. Cole a URL do vídeo (ex.: `https://www.youtube.com/watch?v=XXXXXXXXXXX`).
+3. O MP3 aparece em `downloads/`.
+
+### Exemplo 2 — Fluxo completo (vídeo + transcrição + cortes)
+
+1. Escolha a opção **2**.
+2. Cole a URL do vídeo.
+3. O programa cria uma pasta em `downloads/<titulo>/` contendo:
+   - o **vídeo** `.mp4` e a **thumbnail**;
+   - o **áudio** (dividido em partes de ~29 min, se for longo);
+   - a **transcrição** `.txt` com timestamps;
+   - o **relatório de cortes** (`_cortes.txt` e `_cortes.json`).
+
+### Exemplo 3 — Transcrever um áudio que você já tem
+
+1. Coloque o arquivo de áudio em `downloads/`.
+2. Escolha a opção **5**, selecione o arquivo, o idioma (`pt` por padrão) e o modelo do Whisper.
+
+---
+
+## ⚙️ Configurações
+
+Acesse pelo menu (opção **7**). As preferências são salvas em `download_config.json`:
+
+| Configuração | Padrão | Descrição |
+|--------------|--------|-----------|
+| `output_dir` | `downloads` | Pasta de saída. |
+| `audio_format` | `mp3` | Formato do áudio (`mp3`, `aac`, `m4a`). |
+| `audio_quality` | `192k` | Bitrate do áudio. |
+| `video_format` | `bestvideo+bestaudio/best` | Seleção de qualidade do yt-dlp. |
+| `max_retries` | `3` | Tentativas por download. |
+| `enable_playlist` | `true` | Permitir baixar playlists. |
+| `max_playlist_items` | `10` | Máximo de itens por playlist. |
+| `whisper_model` | `medium` | Modelo do Whisper (`tiny`→`large`). |
+| `duration_tolerance_pct` | `2.0` | Tolerância (%) para considerar o download completo. |
+
+---
+
+## 🎬 Análise de cortes (para pregações/palestras)
+
+A classe `SermonCutAnalyzer` percorre a transcrição e pontua trechos com base em sinais como:
+
+- **Perguntas retóricas** e **chamados à ação** ("levante", "ore", "repita comigo"…)
+- **Intensidade emocional** e **repetição** (ênfase do orador)
+- **Referências bíblicas** e **conteúdo de ensino**
+- **Narrativas / testemunhos**
+
+Cada trecho recebe uma nota de 0 a 10 e uma classificação de tema (Ensino Bíblico, Testemunho, Chamado ao Altar, etc.). O resultado é salvo em `.txt` (legível) e `.json` (para automação).
+
+> Os pesos e as palavras-chave estão no topo da classe `SermonCutAnalyzer` em `youtube_downloader.py` — ajuste conforme o seu conteúdo.
+
+---
+
+## 🧠 Estrutura do código
+
+Tudo está em **`youtube_downloader.py`**, organizado em classes:
+
+| Classe | Responsabilidade |
+|--------|------------------|
+| `DownloadConfig` / `ConfigManager` | Configuração e persistência em JSON. |
+| `YouTubeDownloader` | Orquestra downloads (vídeo, áudio, playlist, completo). |
+| `AudioExtractor` | Extrai e divide o áudio via FFmpeg. |
+| `AudioTranscriber` | Transcrição com Whisper. |
+| `SermonCutAnalyzer` | Pontuação e sugestão de cortes. |
+| `ProgressManager` | Barra de progresso do download. |
+| `UserInterface` | Menu interativo. |
+
+Funções auxiliares importantes:
+
+- `build_ydl_opts()` — base robusta de opções do yt-dlp (retentativas, aborta em fragmento faltando, deixa o client padrão do YouTube).
+- `verify_integrity()` — detecta arquivos truncados comparando durações via `ffprobe`.
+
+---
+
+## ⚡ Dicas de desempenho
+
+- **Modelo do Whisper**: `medium` tem boa qualidade em PT-BR, mas é lento em CPU. Para áudios muito longos, `small` é um bom equilíbrio; `tiny`/`base` são rápidos, porém imprecisos.
+- **Áudios longos**: o programa divide automaticamente em partes de ~29 min. Transcreva por partes se quiser paralelizar.
+- **GPU**: com CUDA disponível, o Whisper acelera drasticamente.
+
+---
+
+## 🛠️ Solução de problemas
+
+| Sintoma | Causa provável | Solução |
+|---------|----------------|---------|
+| `❌ 'ffmpeg' não encontrado` | FFmpeg fora do PATH | Instale o FFmpeg (veja pré-requisitos). |
+| `Requested format is not available` / "Only images are available" | Client do YouTube exigindo PO Token | Atualize o yt-dlp: `pip install -U yt-dlp`. O código já usa o client padrão. |
+| Download trava ou vem incompleto | yt-dlp desatualizado | `pip install -U yt-dlp` (o YouTube muda os formatos com frequência). |
+| Transcrição demora horas | Whisper em CPU | Use um modelo menor (`small`) ou uma máquina com GPU. |
+| `⚠️ Biblioteca yt-dlp ... dias` | Versão antiga da lib | Atualize o yt-dlp. |
+
+---
+
+## ⚖️ Uso responsável
+
+Este projeto é para fins **pessoais e educacionais**. Baixe apenas conteúdo que você tem direito de usar e respeite os [Termos de Serviço do YouTube](https://www.youtube.com/t/terms) e a legislação de direitos autorais aplicável.
+
+---
+
+## 📄 Licença
+
+Uso livre para fins pessoais e educacionais. Ajuste conforme a sua necessidade.

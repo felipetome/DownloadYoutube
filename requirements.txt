@@ -1,12 +1,17 @@
-# Dependências principais
-yt-dlp>=2023.12.30
+# ===== Dependências do YouTube Downloader =====
+
+# Download do YouTube (mantenha SEMPRE atualizado — o YouTube muda os formatos)
+yt-dlp>=2025.6.9
+
+# Barra de progresso no terminal
 tqdm>=4.64.0
 
-# Processamento de áudio (opcional, para funcionalidades avançadas)
-pydub>=0.25.1
+# Transcrição de áudio (Whisper da OpenAI — puxa PyTorch como dependência)
+openai-whisper>=20231117
 
-# Validação de tipos (opcional, para desenvolvimento)
-typing-extensions>=4.0.0
-
-# Sistema de arquivos melhorado
-pathlib2>=2.3.7; python_version < "3.4" 
+# Observações:
+#   - ffmpeg e ffprobe NÃO são pacotes pip. Instale pelo sistema:
+#       macOS:         brew install ffmpeg
+#       Ubuntu/Debian: sudo apt install ffmpeg
+#       Windows:       https://www.gyan.dev/ffmpeg/builds/
+#   - Na primeira transcrição, o Whisper baixa o modelo escolhido (medium ~1.5 GB).
