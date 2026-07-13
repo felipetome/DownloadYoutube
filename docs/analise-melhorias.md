@@ -6,6 +6,15 @@
 > **Status:** fase 1 (bugs #1, #2, #3, #5, #6) aplicada e validada em 2026-07-13.
 > Testes: conversão AAC ok (46min convertidos = duração da origem), dedupe sufixa -2,
 > noplaylist fixo nos fluxos de item único.
+>
+> **Caso real que motivou o #5:** entre 09 e 13/07 o MP3 de 69min
+> (`o-deus-que-trabalha...`) foi sobrescrito no disco por uma conversão parcial
+> (40:41) — uma re-execução interrompida gravou por cima do arquivo bom. O
+> cabeçalho ainda "dizia" 40min consistentes, então só decodificando
+> (`ffmpeg -i arq -f null -`) o corte apareceu. Com `dedupe_stem()`, uma nova
+> execução com o mesmo título agora gera `-2` em vez de sobrescrever.
+> Lição: `ffprobe` lê a duração do cabeçalho; para detectar arquivo cortado de
+> verdade é preciso decodificar até o fim.
 
 ---
 
