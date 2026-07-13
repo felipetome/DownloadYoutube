@@ -186,8 +186,19 @@ def sanitize_filename(title: str, max_length: int = 100) -> str:
     
     title = re.sub(r'\s+', '-', title)
     title = re.sub(r'-+', '-', title)
-    
+
     return title.strip('-').lower()
+
+
+def dedupe_stem(directory: Path, stem: str) -> str:
+    """Evita sobrescrever downloads anteriores: se já existe algum arquivo
+    <stem>.* na pasta, sufixa -2, -3, ... até o nome ficar único."""
+    candidate = stem
+    n = 2
+    while any(directory.glob(f"{candidate}.*")):
+        candidate = f"{stem}-{n}"
+        n += 1
+    return candidate
 
 # ========== PROGRESS HOOK MELHORADO ==========
 class ProgressManager:
@@ -232,11 +243,25 @@ class ProgressManager:
             self.progress_bar = None
             self.start_time = None
 
+        elif d['status'] == 'error':
+            # Fecha a barra para não corromper o terminal nas próximas impressões
+            if self.progress_bar:
+                self.progress_bar.close()
+            self.progress_bar = None
+            self.start_time = None
+
 # ========== EXTRATOR DE ÁUDIO MELHORADO ==========
 class AudioExtractor:
     def __init__(self, config: DownloadConfig):
         self.config = config
-    
+
+    def _codec_args(self) -> List[str]:
+        """Argumentos de codec/bitrate do ffmpeg para o formato configurado."""
+        if self.config.audio_format == "mp3":
+            return ["-acodec", "libmp3lame", "-ab", self.config.audio_quality]
+        # aac e m4a usam o encoder AAC nativo do ffmpeg
+        return ["-acodec", "aac", "-b:a", self.config.audio_quality]
+
     def split_audio(self, audio_path: str, output_dir: str, segment_minutes: int = 29) -> List[str]:
         """Divide o áudio em segmentos de até N minutos"""
         segment_seconds = segment_minutes * 60
@@ -286,18 +311,10 @@ class AudioExtractor:
         )
         
         try:
-            # Comando ffmpeg
-            cmd = [
-                "ffmpeg", "-y", "-i", video_path,
-                "-vn", "-acodec", "libmp3lame" if self.config.audio_format == "mp3" else "aac",
-                "-ab", self.config.audio_quality,
-                str(audio_path)
-            ]
-            
-            if self.config.audio_format != "mp3":
-                cmd[4] = "aac"
-                cmd[5] = "-b:a"
-            
+            # Comando ffmpeg (codec conforme o formato configurado)
+            cmd = ["ffmpeg", "-y", "-i", video_path, "-vn",
+                   *self._codec_args(), str(audio_path)]
+
             # Executa conversão com progresso em thread separada
             result = self._extract_with_progress(cmd, progress_bar, duration)
             
@@ -318,13 +335,9 @@ class AudioExtractor:
     def _extract_audio_simple(self, video_path: str, audio_path: Path) -> Optional[str]:
         """Extração simples sem progresso"""
         try:
-            cmd = [
-                "ffmpeg", "-y", "-i", video_path,
-                "-vn", "-acodec", "libmp3lame",
-                "-ab", self.config.audio_quality,
-                str(audio_path)
-            ]
-            
+            cmd = ["ffmpeg", "-y", "-i", video_path, "-vn",
+                   *self._codec_args(), str(audio_path)]
+
             result = subprocess.run(cmd, capture_output=True, text=True)
             
             if result.returncode == 0 and audio_path.exists():
@@ -992,14 +1005,17 @@ class YouTubeDownloader:
         safe_title = sanitize_filename(title)
         if playlist_index is not None:
             safe_title = f"{playlist_index:02d}_{safe_title}"
-        
+        safe_title = dedupe_stem(Path(self.config.output_dir), safe_title)
+
         video_filename = Path(self.config.output_dir) / f"{safe_title}.mp4"
 
         # Configurações do yt-dlp (base robusta + específicas deste fluxo)
         ydl_opts = build_ydl_opts({
             'format': self.config.video_format,
             'outtmpl': str(video_filename),
-            'noplaylist': not self.config.enable_playlist,
+            # URL de vídeo com &list= NÃO deve puxar a playlist inteira aqui
+        # (sobrescreveria o mesmo arquivo N vezes). Playlist tem fluxo próprio.
+        'noplaylist': True,
             'merge_output_format': 'mp4',
             'progress_hooks': [self.progress_manager.hook],
         })
@@ -1048,13 +1064,16 @@ class YouTubeDownloader:
             print(f"⏱️ Duração: {duration//60}min {duration%60}s")
 
         safe_title = sanitize_filename(title)
+        safe_title = dedupe_stem(Path(self.config.output_dir), safe_title)
         out_template = str(Path(self.config.output_dir) / f"{safe_title}.%(ext)s")
         final_path = Path(self.config.output_dir) / f"{safe_title}.{self.config.audio_format}"
 
         ydl_opts = build_ydl_opts({
             'format': 'bestaudio/best',
             'outtmpl': out_template,
-            'noplaylist': not self.config.enable_playlist,
+            # URL de vídeo com &list= NÃO deve puxar a playlist inteira aqui
+        # (sobrescreveria o mesmo arquivo N vezes). Playlist tem fluxo próprio.
+        'noplaylist': True,
             'progress_hooks': [self.progress_manager.hook],
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
