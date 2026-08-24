@@ -59,3 +59,14 @@ venv/bin/pip install -U yt-dlp
 Nota sobre o CLI: `which -a yt-dlp` mostra `~/Library/Python/3.14/bin/yt-dlp` (2026.03.17)
 antes de `/opt/homebrew/bin/yt-dlp`. Isso não afeta o script, mas o uso manual do comando
 `yt-dlp` no terminal pega a versão antiga e dá 403.
+
+## Limpeza do PATH (2026-08-24)
+
+- `yt-dlp` 2026.3.17 instalado via `pip --user` em `~/Library/Python/3.14/` foi **removido**
+  (`python3 -m pip uninstall -y --break-system-packages yt-dlp`) — ele sombreava o binário do
+  brew no PATH e era a cópia da lib que o `python3` global carregava.
+- `brew upgrade yt-dlp`: 2026.6.9 → 2026.8.19.
+- Estado final: `which -a yt-dlp` → só `/opt/homebrew/bin/yt-dlp` (2026.08.19); lib do venv
+  em 2026.08.19; Python global sem `yt_dlp` (o guard de venv garante que nenhum script do
+  projeto dependa dele).
+- `baixar_audio.py` recebeu o mesmo bloco de reexecução no venv.
