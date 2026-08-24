@@ -1,3 +1,22 @@
+# ========== GARANTIA DE AMBIENTE (venv do projeto) ==========
+# Este script usa a BIBLIOTECA `yt_dlp` (não o binário do brew). O Python global do
+# sistema carrega uma cópia antiga da lib, e o YouTube responde HTTP 403 Forbidden
+# nos downloads. Se o script for iniciado fora do venv do projeto, ele se reexecuta
+# com o Python do venv, onde a lib é mantida atualizada.
+import os as _os
+import sys as _sys
+from pathlib import Path as _Path
+
+_PROJ = _Path(__file__).resolve().parent
+_VENV_PY = _PROJ / ("venv/Scripts/python.exe" if _os.name == "nt" else "venv/bin/python3")
+_VENV_DIR = _PROJ / "venv"
+if (_VENV_PY.exists()
+        and _Path(_sys.prefix).resolve() != _VENV_DIR.resolve()
+        and not _os.environ.get("YTDL_VENV_REEXEC")):
+    print(f"🔁 Reexecutando no venv do projeto: {_VENV_PY}", flush=True)
+    _os.environ["YTDL_VENV_REEXEC"] = "1"
+    _os.execv(str(_VENV_PY), [str(_VENV_PY), str(_Path(__file__).resolve()), *_sys.argv[1:]])
+
 import yt_dlp
 import os
 import re
